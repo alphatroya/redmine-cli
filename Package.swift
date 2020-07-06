@@ -14,6 +14,10 @@ let package = Package(
     targets: [
         .target(
             name: "RedmineCLI",
+            dependencies: ["CBridge"]
+        ),
+        .target(
+            name: "CBridge",
             dependencies: []
         ),
         .testTarget(

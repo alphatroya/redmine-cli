@@ -3,4 +3,7 @@
 // Copyright © 2020 Alexey Korolev <alphatroya@gmail.com>
 //
 
-print("Hello, world!")
+import CBridge
+import Foundation
+
+shellCMD("nvim Comment.txt")
