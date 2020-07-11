@@ -10,11 +10,20 @@ let package = Package(
         .executable(name: "redmine-cli", targets: ["RedmineCLI"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.2.0"),
     ],
     targets: [
         .target(
             name: "RedmineCLI",
-            dependencies: ["CBridge"]
+            dependencies: [
+                "CBridge",
+                "Redmine",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
+        ),
+        .target(
+            name: "Redmine",
+            dependencies: []
         ),
         .target(
             name: "CBridge",
