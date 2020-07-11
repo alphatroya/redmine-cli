@@ -5,8 +5,6 @@
 
 import Foundation
 
-public let kIssueService = IssueService(requestProvider: RequestProvider())
-
 public protocol IssueServiceProtocol {
     func update(_: IssueID, comment: String) -> Result<Void, Error>
 }
@@ -23,3 +21,5 @@ public final class IssueService: IssueServiceProtocol {
             .map { (_: Data) in () }
     }
 }
+
+public let kIssueService = IssueService(requestProvider: RequestProvider())
