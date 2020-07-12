@@ -1,5 +1,8 @@
 //
-// Created by Alexey Korolev on 11.07.2020.
+// Redmine CLI
+// Copyright © 2020 Alexey Korolev <alphatroya@gmail.com>
 //
+
+import Foundation
 
 public typealias IssueID = Int
