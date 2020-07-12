@@ -5,4 +5,7 @@
 
 import Foundation
 
-Main.main()
+struct IssueUpdate: Encodable {
+    var notes: String
+    var assignedToId: UserID?
+}
