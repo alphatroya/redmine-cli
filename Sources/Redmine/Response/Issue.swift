@@ -9,4 +9,6 @@ struct IssueResponse: Decodable {
 
 public struct Issue: Decodable {
     public let id: Int
+    public let assignedTo: User
+    public let author: User
 }

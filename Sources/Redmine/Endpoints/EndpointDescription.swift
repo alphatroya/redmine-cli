@@ -14,7 +14,7 @@ protocol EndpointDescription {
     var method: Method { get }
     var path: String { get }
 
-    func body() throws -> Data
+    func body() throws -> Data?
     func host() throws -> URL
 }
 
@@ -31,6 +31,7 @@ extension EndpointDescription {
 
     func encode<Body: Encodable>(_ body: Body) throws -> Data {
         let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
         return try encoder.encode(body)
     }
 }

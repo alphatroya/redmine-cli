@@ -19,6 +19,9 @@ struct Comment: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Enable verbose logging")
     var verbose: Bool = false
 
+    @Flag(name: .shortAndLong, help: "Assign task to the author")
+    var reject: Bool = false
+
     func run() throws {
         let editor = ProcessInfo.processInfo.environment["EDITOR"] ?? "vi"
         if verbose {
@@ -41,8 +44,13 @@ struct Comment: ParsableCommand {
         removeTemporaryFile(fileURL: fileURL)
 
         let service = Redmine.kIssueService
-        _ = try service.update(issue, comment: notes).get()
+        let issueResponse = try fetchIssue(service: service)
+        _ = try service.update(issue, comment: notes, assignTo: reject ? issueResponse.author.id : nil).get()
         print("Updated issue with id: \(issue)")
+    }
+
+    private func fetchIssue(service: IssueService) throws -> Issue {
+        try service.issue(issue).get()
     }
 
     private func removeTemporaryFile(fileURL: URL) {

@@ -6,7 +6,8 @@
 import Foundation
 
 public protocol IssueServiceProtocol {
-    func update(_: IssueID, comment: String) -> Result<Void, Error>
+    func issue(_: IssueID) -> Result<Issue, Error>
+    func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error>
 }
 
 public final class IssueService: IssueServiceProtocol {
@@ -16,8 +17,13 @@ public final class IssueService: IssueServiceProtocol {
         self.requestProvider = requestProvider
     }
 
-    public func update(_ id: IssueID, comment: String) -> Result<Void, Error> {
-        requestProvider.sync(IssueEndpoint.update(id: id, data: .init(notes: comment)))
+    public func issue(_ id: IssueID) -> Result<Issue, Error> {
+        requestProvider.sync(IssueEndpoint.get(id: id))
+            .map { (response: IssueResponse) in response.issue }
+    }
+
+    public func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error> {
+        requestProvider.sync(IssueEndpoint.update(id: id, data: .init(notes: comment, assignedToId: userID)))
             .map { (_: Data) in () }
     }
 }

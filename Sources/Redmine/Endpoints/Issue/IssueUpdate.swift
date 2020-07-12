@@ -7,4 +7,5 @@ import Foundation
 
 struct IssueUpdate: Encodable {
     var notes: String
+    var assignedToId: UserID?
 }

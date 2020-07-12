@@ -50,7 +50,9 @@ final class RequestProvider: RequestProviderProtocol {
         sync(request)
             .flatMap { data in
                 Result<Response, Swift.Error> {
-                    try JSONDecoder().decode(Response.self, from: data)
+                    let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                    return try decoder.decode(Response.self, from: data)
                 }
             }
     }
