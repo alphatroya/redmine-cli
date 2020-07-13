@@ -33,7 +33,6 @@ extension RequestTarget where Self: EndpointDescription {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.httpBody = try body()
-        print(request)
         return request
     }
 }

@@ -29,7 +29,7 @@ struct Comment: ParsableCommand {
         }
 
         let directory = NSTemporaryDirectory()
-        let fileName = UUID().uuidString
+        let fileName = UUID().uuidString + ".md"
         let fileURL = URL(fileURLWithPath: [directory, fileName].joined())
         if verbose {
             print("using temporary file at path: \(fileURL)")
