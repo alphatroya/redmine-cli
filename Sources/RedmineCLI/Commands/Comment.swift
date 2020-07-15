@@ -25,28 +25,35 @@ struct Comment: ParsableCommand {
     func run() throws {
         let editor = ProcessInfo.processInfo.environment["EDITOR"] ?? "vi"
         if verbose {
-            print("using editor: \(editor)")
+            print("Using editor: \(editor)")
         }
 
         let directory = NSTemporaryDirectory()
         let fileName = UUID().uuidString + ".md"
         let fileURL = URL(fileURLWithPath: [directory, fileName].joined())
         if verbose {
-            print("using temporary file at path: \(fileURL)")
+            print("Creating temporary comment file at path: \(fileURL)")
         }
 
         shellCMD("\(editor) \(fileURL.absoluteString)")
+
         guard let data = try? Data(contentsOf: fileURL),
             let notes = String(data: data, encoding: .utf8),
             !notes.isEmpty else {
             throw ValidationError("You aren't entered any text, aborting")
         }
-        removeTemporaryFile(fileURL: fileURL)
 
-        let service = Redmine.kIssueService
-        let issueResponse = try fetchIssue(service: service)
-        _ = try service.update(issue, comment: notes, assignTo: reject ? issueResponse.author.id : nil).get()
-        print("Updated issue with id: \(issue)")
+        do {
+            let service = Redmine.kIssueService
+            let issueResponse = try fetchIssue(service: service)
+            _ = try service.update(issue, comment: notes, assignTo: reject ? issueResponse.author.id : nil).get()
+            print("Updated issue with id: \(issue)")
+        } catch {
+            print("Error occured, keep comment file at url: \(fileURL)")
+            throw error
+        }
+
+        removeTemporaryFile(fileURL: fileURL)
     }
 
     private func fetchIssue(service: IssueService) throws -> Issue {
@@ -57,7 +64,7 @@ struct Comment: ParsableCommand {
         do {
             try FileManager.default.removeItem(at: fileURL)
             if verbose {
-                print("removed temporary comment file")
+                print("Removed temporary comment file")
             }
         } catch {
             print("failed to remove tmp file: \(error)")
