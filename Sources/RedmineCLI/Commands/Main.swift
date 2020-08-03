@@ -5,7 +5,7 @@
 
 import ArgumentParser
 
-struct Main: ParsableCommand {
+struct RedmineCli: ParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: "A CLI tool to working with Redmine task manager",
         subcommands: [
@@ -18,7 +18,7 @@ struct Main: ParsableCommand {
 
     func run() throws {
         guard version else {
-            throw CleanExit.helpRequest(Main.self)
+            throw CleanExit.helpRequest(RedmineCli.self)
         }
         print("0.0.1")
     }
