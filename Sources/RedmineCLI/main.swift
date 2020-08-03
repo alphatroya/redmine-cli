@@ -5,4 +5,4 @@
 
 import Foundation
 
-Main.main()
+RedmineCli.main()
