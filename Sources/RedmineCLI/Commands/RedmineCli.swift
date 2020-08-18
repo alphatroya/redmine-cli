@@ -10,6 +10,7 @@ struct RedmineCli: ParsableCommand {
         abstract: "A CLI tool to working with Redmine task manager",
         subcommands: [
             Comment.self,
+            Statuses.self,
         ]
     )
 
