@@ -8,7 +8,8 @@ import Foundation
 extension URLRequest {
     var cURLRepresentation: String {
         guard let url = self.url,
-            let method = httpMethod else {
+            let method = httpMethod
+        else {
             return "cURL command can't be generated"
         }
 
@@ -21,7 +22,8 @@ extension URLRequest {
         }
 
         if let httpBody = self.httpBody
-            .flatMap({ String(data: $0, encoding: .utf8) }) {
+            .flatMap({ String(data: $0, encoding: .utf8) })
+        {
             components.append("-d '\(httpBody)'")
         }
 

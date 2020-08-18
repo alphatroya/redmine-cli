@@ -13,12 +13,17 @@ enum EndpointDescriptionError: Error {
 protocol EndpointDescription {
     var method: Method { get }
     var path: String { get }
+    var queryItems: [URLQueryItem] { get }
 
     func body() throws -> Data?
     func host() throws -> URL
 }
 
 extension EndpointDescription {
+    var queryItems: [URLQueryItem] {
+        []
+    }
+
     func host() throws -> URL {
         guard let urlString = ProcessInfo.processInfo.environment["REDMINE_HOST"] else {
             throw EndpointDescriptionError.hostNotSet

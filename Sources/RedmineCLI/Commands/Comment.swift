@@ -39,7 +39,8 @@ struct Comment: ParsableCommand {
 
         guard let data = try? Data(contentsOf: fileURL),
             let notes = String(data: data, encoding: .utf8),
-            !notes.isEmpty else {
+            !notes.isEmpty
+        else {
             throw ValidationError("You aren't entered any text, aborting")
         }
 

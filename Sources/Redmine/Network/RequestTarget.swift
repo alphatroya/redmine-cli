@@ -9,6 +9,8 @@ enum Method: String {
     case get, post, put, delete
 }
 
+struct BuildingURLError: Error {}
+
 struct AuthEmptyError: Error {}
 
 protocol RequestTarget {
@@ -24,7 +26,18 @@ extension RequestTarget where Self: EndpointDescription {
         var url = try host()
         url.appendPathComponent(path)
         url.appendPathExtension(apiFormat)
-        var request = URLRequest(url: url)
+        guard var urlCom = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            throw BuildingURLError()
+        }
+
+        if !queryItems.isEmpty {
+            urlCom.queryItems = queryItems
+        }
+
+        guard let resultURL = urlCom.url else {
+            throw BuildingURLError()
+        }
+        var request = URLRequest(url: resultURL)
         request.httpMethod = method.rawValue.uppercased()
         guard let auth = ProcessInfo.processInfo.environment["REDMINE_API_KEY"], !auth.isEmpty else {
             throw AuthEmptyError()

@@ -11,6 +11,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.2.1"),
+        .package(url: "https://github.com/scottrhoyt/SwiftyTextTable", from: "0.9.0"),
     ],
     targets: [
         .target(
@@ -19,6 +20,7 @@ let package = Package(
                 "CBridge",
                 "Redmine",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "SwiftyTextTable",
             ]
         ),
         .target(

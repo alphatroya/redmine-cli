@@ -19,7 +19,7 @@ public final class IssueService: IssueServiceProtocol {
 
     public func issue(_ id: IssueID) -> Result<Issue, Error> {
         requestProvider.sync(IssueEndpoint.get(id: id))
-            .map { (response: IssueResponse) in response.issue }
+            .map { (response: ResponseContainer<Issue>) in response.result }
     }
 
     public func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error> {
