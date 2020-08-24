@@ -6,7 +6,7 @@
 import Foundation
 
 public protocol IssueStatusServiceProtocol {
-    func all(_ page: Pagination) -> Result<[IssueStatus], Error>
+    func all() -> Result<[IssueStatus], Error>
 }
 
 public final class IssueStatusService: IssueStatusServiceProtocol {
@@ -16,8 +16,8 @@ public final class IssueStatusService: IssueStatusServiceProtocol {
         self.requestProvider = requestProvider
     }
 
-    public func all(_ page: Pagination) -> Result<[IssueStatus], Error> {
-        requestProvider.sync(IssueStatusEndpoint(pagination: page))
+    public func all() -> Result<[IssueStatus], Error> {
+        requestProvider.sync(IssueStatusEndpoint())
             .map { (response: ResponseContainer<[IssueStatus]>) in response.result }
     }
 }
