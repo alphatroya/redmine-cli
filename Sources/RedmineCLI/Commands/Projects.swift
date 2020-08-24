@@ -9,7 +9,10 @@ import Redmine
 
 struct Projects: ParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "Fetch all project id's from the tracker"
+        abstract: "Fetch all project id's from the tracker",
+        subcommands: [
+            Members.self,
+        ]
     )
 
     func run() throws {

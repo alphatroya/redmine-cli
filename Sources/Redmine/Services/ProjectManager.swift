@@ -7,6 +7,7 @@ import Foundation
 
 public protocol ProjectManagerProtocol {
     var all: Result<[Project], Error> { get }
+    func members(for id: ProjectID) -> Result<[ProjectMember], Error>
 }
 
 final class ProjectManager: ProjectManagerProtocol {
@@ -19,5 +20,10 @@ final class ProjectManager: ProjectManagerProtocol {
     var all: Result<[Project], Error> {
         requestProvider.sync(ProjectsEndpoint())
             .map { (response: ResponseContainer<[Project]>) in response.result }
+    }
+
+    func members(for id: ProjectID) -> Result<[ProjectMember], Error> {
+        requestProvider.sync(ProjectMemberEndpoint(project: id))
+            .map { (response: ResponseContainer<[ProjectMember]>) in response.result }
     }
 }
