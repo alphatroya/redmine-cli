@@ -21,5 +21,3 @@ public final class IssueStatusService: IssueStatusServiceProtocol {
             .map { (response: ResponseContainer<[IssueStatus]>) in response.result }
     }
 }
-
-public let kIssueStatusService = IssueStatusService(requestProvider: RequestProvider())

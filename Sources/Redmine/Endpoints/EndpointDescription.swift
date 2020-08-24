@@ -39,4 +39,8 @@ extension EndpointDescription {
         encoder.keyEncodingStrategy = .convertToSnakeCase
         return try encoder.encode(body)
     }
+
+    func body() throws -> Data? {
+        nil
+    }
 }

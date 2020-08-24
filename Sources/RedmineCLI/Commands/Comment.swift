@@ -57,7 +57,7 @@ struct Comment: ParsableCommand {
         removeTemporaryFile(fileURL: fileURL)
     }
 
-    private func fetchIssue(service: IssueService) throws -> Issue {
+    private func fetchIssue(service: IssueServiceProtocol) throws -> Issue {
         try service.issue(issue).get()
     }
 
