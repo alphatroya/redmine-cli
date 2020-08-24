@@ -11,6 +11,7 @@ struct RedmineCli: ParsableCommand {
         subcommands: [
             Comment.self,
             Statuses.self,
+            Projects.self,
         ]
     )
 
@@ -21,6 +22,6 @@ struct RedmineCli: ParsableCommand {
         guard version else {
             throw CleanExit.helpRequest(RedmineCli.self)
         }
-        print("0.0.1")
+        print("0.0.8")
     }
 }

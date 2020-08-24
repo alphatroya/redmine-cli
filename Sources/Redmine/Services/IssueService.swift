@@ -27,5 +27,3 @@ public final class IssueService: IssueServiceProtocol {
             .map { (_: Data) in () }
     }
 }
-
-public let kIssueService = IssueService(requestProvider: RequestProvider())
