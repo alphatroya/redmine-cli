@@ -5,11 +5,13 @@
 
 import Foundation
 
+public typealias ProjectID = Int
+
 public struct Project: Decodable {
-    public let id: Int
+    public let id: ProjectID
     public let name: String
 }
 
 extension Project: ContainerKeySpecifier {
-    static var containerKey: String = "projects"
+    static let containerKey: String = "projects"
 }
