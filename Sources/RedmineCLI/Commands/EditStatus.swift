@@ -9,7 +9,7 @@ import Redmine
 
 struct EditStatus: ParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "Edit issue status and optionally assignee"
+        abstract: "Edit issue status and (optionally) assignee"
     )
 
     enum IssueStatusOption: ExpressibleByArgument {
@@ -32,7 +32,7 @@ struct EditStatus: ParsableCommand {
     @Option(name: .shortAndLong, help: "Comma separated list of statuses for sequentially edit statuses")
     var status: IssueStatusOption
 
-    @Option(name: .shortAndLong, help: "New assignee, use me for assign to yourself")
+    @Option(name: .shortAndLong, help: "New assignee")
     var assignee: NewAssignee?
 
     @Argument(help: "Issue ID")
