@@ -48,7 +48,9 @@ struct Comment: ParsableCommand {
             let service = Redmine.kIssueService
             let issueResponse = try fetchIssue(service: service)
             _ = try service.update(issue, comment: notes, assignTo: reject ? issueResponse.author.id : nil).get()
-            print("Updated issue with id: \(issue)")
+            if verbose {
+                print("Updated issue with id: \(issue)")
+            }
         } catch {
             print("Error occured, keep comment file at url: \(fileURL)")
             throw error
