@@ -6,7 +6,9 @@
 import Foundation
 
 public struct IssueStatus: Decodable {
-    public let id: Int
+    public typealias Identifier = Int
+
+    public let id: Identifier
     public let name: String
 }
 

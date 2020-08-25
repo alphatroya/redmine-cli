@@ -6,6 +6,7 @@
 import Foundation
 
 struct IssueUpdate: Encodable {
-    var notes: String
-    var assignedToId: UserID?
+    var notes: String?
+    var assignedToId: NewAssignee?
+    var statusId: IssueStatus.Identifier?
 }
