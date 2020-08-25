@@ -23,6 +23,6 @@ struct RedmineCli: ParsableCommand {
         guard version else {
             throw CleanExit.helpRequest(RedmineCli.self)
         }
-        print("0.0.10")
+        print("0.0.11")
     }
 }
