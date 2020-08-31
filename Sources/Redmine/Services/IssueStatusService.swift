@@ -10,14 +10,20 @@ public protocol IssueStatusServiceProtocol {
 }
 
 public final class IssueStatusService: IssueStatusServiceProtocol {
-    let requestProvider: RequestProviderProtocol
+    // MARK: Lifecycle
 
     init(requestProvider: RequestProviderProtocol) {
         self.requestProvider = requestProvider
     }
 
+    // MARK: Public
+
     public func all() -> Result<[IssueStatus], Error> {
         requestProvider.sync(IssueStatusEndpoint())
             .map { (response: ResponseContainer<[IssueStatus]>) in response.result }
     }
+
+    // MARK: Internal
+
+    let requestProvider: RequestProviderProtocol
 }

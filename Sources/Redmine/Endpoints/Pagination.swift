@@ -6,12 +6,16 @@
 import Foundation
 
 public struct Pagination {
-    let limit, offset: Int
+    // MARK: Lifecycle
 
     public init(limit: Int, offset: Int) {
         self.limit = limit
         self.offset = offset
     }
+
+    // MARK: Internal
+
+    let limit, offset: Int
 
     var asQueryParams: [URLQueryItem] {
         [

@@ -9,6 +9,8 @@ import Foundation
 import Redmine
 
 struct Comment: ParsableCommand {
+    // MARK: Internal
+
     static var configuration = CommandConfiguration(
         abstract: "Add a comment to the specified issue"
     )
@@ -58,6 +60,8 @@ struct Comment: ParsableCommand {
 
         removeTemporaryFile(fileURL: fileURL)
     }
+
+    // MARK: Private
 
     private func fetchIssue(service: IssueServiceProtocol) throws -> Issue {
         try service.issue(issue).get()

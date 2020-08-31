@@ -9,6 +9,8 @@ enum IssueEndpoint: RequestTarget, EndpointDescription {
     case get(id: IssueID)
     case update(id: IssueID, data: IssueUpdate)
 
+    // MARK: Internal
+
     struct IssueWrapper: Encodable {
         let issue: IssueUpdate
     }

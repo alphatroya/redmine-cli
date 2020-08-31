@@ -12,11 +12,13 @@ public protocol IssueServiceProtocol {
 }
 
 public final class IssueService: IssueServiceProtocol {
-    let requestProvider: RequestProviderProtocol
+    // MARK: Lifecycle
 
     init(requestProvider: RequestProviderProtocol) {
         self.requestProvider = requestProvider
     }
+
+    // MARK: Public
 
     public func issue(_ id: IssueID) -> Result<Issue, Error> {
         requestProvider.sync(IssueEndpoint.get(id: id))
@@ -32,4 +34,8 @@ public final class IssueService: IssueServiceProtocol {
         requestProvider.sync(IssueEndpoint.update(id: id, data: .init(assignedToId: assignee, statusId: status)))
             .map { (_: Data) in () }
     }
+
+    // MARK: Internal
+
+    let requestProvider: RequestProviderProtocol
 }
