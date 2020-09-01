@@ -4,7 +4,6 @@
 //
 
 import ArgumentParser
-import CBridge
 import Foundation
 import Redmine
 
@@ -25,40 +24,21 @@ struct Comment: ParsableCommand {
     var reject: Bool = false
 
     func run() throws {
-        let editor = ProcessInfo.processInfo.environment["EDITOR"] ?? "vi"
-        if verbose {
-            print("Using editor: \(editor)")
-        }
-
-        let directory = NSTemporaryDirectory()
-        let fileName = UUID().uuidString + ".md"
-        let fileURL = URL(fileURLWithPath: [directory, fileName].joined())
-        if verbose {
-            print("Creating temporary comment file at path: \(fileURL)")
-        }
-
-        shellCMD("\(editor) \(fileURL.absoluteString)")
-
-        guard let data = try? Data(contentsOf: fileURL),
-            let notes = String(data: data, encoding: .utf8),
-            !notes.isEmpty
-        else {
-            throw ValidationError("You aren't entered any text, aborting")
-        }
+        let userInput = try requestInput(fileType: ".md", verbose: verbose)
 
         do {
             let service = Redmine.kIssueService
             let issueResponse = try fetchIssue(service: service)
-            _ = try service.update(issue, comment: notes, assignTo: reject ? issueResponse.author.id : nil).get()
+            _ = try service.update(issue, comment: userInput.notes, assignTo: reject ? issueResponse.author.id : nil).get()
             if verbose {
                 print("Updated issue with id: \(issue)")
             }
         } catch {
-            print("Error occured, keep comment file at url: \(fileURL)")
+            print("Error occurred, keep comment file at url: \(userInput.fileURL)")
             throw error
         }
 
-        removeTemporaryFile(fileURL: fileURL)
+        removeTemporaryFile(fileURL: userInput.fileURL)
     }
 
     // MARK: Private
@@ -78,3 +58,5 @@ struct Comment: ParsableCommand {
         }
     }
 }
+
+extension Comment: UserInputRequester {}

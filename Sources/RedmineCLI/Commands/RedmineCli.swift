@@ -11,6 +11,7 @@ struct RedmineCli: ParsableCommand {
         subcommands: [
             Comment.self,
             EditStatus.self,
+            NewUserStory.self,
             Projects.self,
             Statuses.self,
             Trackers.self,
