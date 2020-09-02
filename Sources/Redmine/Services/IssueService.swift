@@ -9,6 +9,7 @@ public protocol IssueServiceProtocol {
     func issue(_: IssueID) -> Result<Issue, Error>
     func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error>
     func update(_ id: IssueID, status: IssueStatus.Identifier, assignTo assignee: NewAssignee?) -> Result<Void, Error>
+    func new(_ data: NewIssuePayload) -> Result<Issue, Error>
 }
 
 public final class IssueService: IssueServiceProtocol {
@@ -28,6 +29,11 @@ public final class IssueService: IssueServiceProtocol {
     public func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error> {
         requestProvider.sync(IssueEndpoint.update(id: id, data: .init(notes: comment, assignedToId: userID.map { NewAssignee.id($0) })))
             .map { (_: Data) in () }
+    }
+
+    public func new(_ data: NewIssuePayload) -> Result<Issue, Error> {
+        requestProvider.sync(IssueEndpoint.new(data))
+            .map { (response: ResponseContainer<Issue>) in response.result }
     }
 
     public func update(_ id: IssueID, status: IssueStatus.Identifier, assignTo assignee: NewAssignee?) -> Result<Void, Error> {

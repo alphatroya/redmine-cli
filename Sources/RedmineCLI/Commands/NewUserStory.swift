@@ -10,14 +10,20 @@ import Redmine
 struct NewUserStory: ParsableCommand {
     static let configuration: CommandConfiguration = .init(abstract: "Create a new user story task")
 
-    @Option(name: .shortAndLong, help: "Tracker type ID")
+    @Option(help: "Tracker type ID")
     var tracker: Redmine.Tracker.Identifier
 
-    @Option(name: .shortAndLong, help: "Project for a new user story")
+    @Option(help: "Project for a new user story")
     var project: Redmine.ProjectID
 
-    @Option(name: .shortAndLong, help: "Parent task for a new user story")
+    @Option(help: "Parent task for a new user story")
     var epic: Redmine.IssueID
+
+    @Option(help: "Assign task to this user")
+    var assign: Redmine.UserID
+
+    @Option(help: "Estimated value")
+    var estimated: Int = 1
 
     @Flag(name: .shortAndLong, help: "Enable verbose logging")
     var verbose: Bool = false
@@ -31,7 +37,20 @@ struct NewUserStory: ParsableCommand {
         }
         let title = String(components[0])
         let description = String(components.dropFirst().joined(separator: "\n\n"))
-//        curl -v -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{ "issue": { "project_id": 901, "tracker_id": 10, "subject":"Test", "description":"Desc", "assigned_to_id": 44, "estimated_hours": 1, "parent_issue_id": 71123, "custom_fields":[{"id":20,"value":"Простое / Типовое"}] } }' 'https:///issues.json' | jq
+
+        let issueService = Redmine.kIssueService
+        let issue = try issueService.new(
+            .init(
+                projectId: project,
+                trackerId: tracker,
+                subject: title,
+                description: description,
+                assignedToId: assign,
+                estimatedHours: estimated,
+                parentIssueId: epic
+            )
+        ).get()
+        print(issue.id)
     }
 }
 

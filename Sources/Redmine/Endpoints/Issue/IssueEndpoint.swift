@@ -8,11 +8,12 @@ import Foundation
 enum IssueEndpoint: RequestTarget, EndpointDescription {
     case get(id: IssueID)
     case update(id: IssueID, data: IssueUpdate)
+    case new(NewIssuePayload)
 
     // MARK: Internal
 
-    struct IssueWrapper: Encodable {
-        let issue: IssueUpdate
+    struct IssueWrapper<Data: Encodable>: Encodable {
+        let issue: Data
     }
 
     var method: Method {
@@ -21,6 +22,8 @@ enum IssueEndpoint: RequestTarget, EndpointDescription {
             return .get
         case .update:
             return .put
+        case .new:
+            return .post
         }
     }
 
@@ -28,6 +31,8 @@ enum IssueEndpoint: RequestTarget, EndpointDescription {
         switch self {
         case let .update(id, _), let .get(id):
             return "issues/\(id)"
+        case .new:
+            return "issues"
         }
     }
 
@@ -36,6 +41,8 @@ enum IssueEndpoint: RequestTarget, EndpointDescription {
         case .get:
             return nil
         case let .update(_, data):
+            return try encode(IssueWrapper(issue: data))
+        case let .new(data):
             return try encode(IssueWrapper(issue: data))
         }
     }
