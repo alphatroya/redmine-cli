@@ -5,8 +5,9 @@
 
 import XCTest
 
-import RedmineCLITests
+import TextHighlighterTests
 
 var tests = [XCTestCaseEntry]()
-tests += RedmineCLITests.allTests()
+tests += TextHighlighterTests.__allTests()
+
 XCTMain(tests)
