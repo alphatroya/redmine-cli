@@ -33,7 +33,7 @@ struct NewUserStory: ParsableCommand {
         let userInput = try requestInput(fileType: ".feature", verbose: verbose)
         let components = userInput.notes.components(separatedBy: "\n\n")
         guard components.count > 1 else {
-            print("You should enter title and description separated by newline symbol")
+            print("You should enter title and description separated by one empty line")
             throw ExitCode(1)
         }
         let title = String(components[0])
