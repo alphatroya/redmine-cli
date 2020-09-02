@@ -6,6 +6,7 @@
 import ArgumentParser
 import Foundation
 import Redmine
+import TextHighlighter
 
 struct NewUserStory: ParsableCommand {
     static let configuration: CommandConfiguration = .init(abstract: "Create a new user story task")
@@ -36,7 +37,7 @@ struct NewUserStory: ParsableCommand {
             throw ExitCode(1)
         }
         let title = String(components[0])
-        let description = String(components.dropFirst().joined(separator: "\n\n"))
+        let description = GherkinHighlighter.highlight(String(components.dropFirst().joined(separator: "\n\n")))
 
         let issueService = Redmine.kIssueService
         let issue = try issueService.new(

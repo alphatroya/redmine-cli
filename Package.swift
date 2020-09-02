@@ -19,9 +19,14 @@ let package = Package(
             dependencies: [
                 "CBridge",
                 "Redmine",
+                "TextHighlighter",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "SwiftyTextTable",
             ]
+        ),
+        .target(
+            name: "TextHighlighter",
+            dependencies: []
         ),
         .target(
             name: "Redmine",
@@ -32,8 +37,8 @@ let package = Package(
             dependencies: []
         ),
         .testTarget(
-            name: "RedmineCLITests",
-            dependencies: ["RedmineCLI"]
+            name: "TextHighlighterTests",
+            dependencies: ["TextHighlighter"]
         ),
     ]
 )
