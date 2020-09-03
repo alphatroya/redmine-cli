@@ -36,7 +36,8 @@ extension UserInputRequester {
             let notes = String(data: data, encoding: .utf8),
             !notes.isEmpty
         else {
-            throw ValidationError("You aren't entered any text, aborting")
+            print("Input file is empty, aborting")
+            throw ExitCode(1)
         }
         return .init(notes: notes, fileURL: fileURL)
     }
