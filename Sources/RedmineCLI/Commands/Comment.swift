@@ -38,24 +38,13 @@ struct Comment: ParsableCommand {
             throw error
         }
 
-        removeTemporaryFile(fileURL: userInput.fileURL)
+        removeTemporaryFile(fileURL: userInput.fileURL, verbose: verbose)
     }
 
     // MARK: Private
 
     private func fetchIssue(service: IssueServiceProtocol) throws -> Issue {
         try service.issue(issue).get()
-    }
-
-    private func removeTemporaryFile(fileURL: URL) {
-        do {
-            try FileManager.default.removeItem(at: fileURL)
-            if verbose {
-                print("Removed temporary comment file")
-            }
-        } catch {
-            print("failed to remove tmp file: \(error)")
-        }
     }
 }
 

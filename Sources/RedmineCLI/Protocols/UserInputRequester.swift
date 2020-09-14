@@ -14,6 +14,7 @@ struct UserInput {
 
 protocol UserInputRequester {
     func requestInput(fileType: String, verbose: Bool) throws -> UserInput
+    func removeTemporaryFile(fileURL: URL, verbose: Bool)
 }
 
 extension UserInputRequester {
@@ -40,5 +41,16 @@ extension UserInputRequester {
             throw ExitCode(1)
         }
         return .init(notes: notes, fileURL: fileURL)
+    }
+
+    func removeTemporaryFile(fileURL: URL, verbose: Bool) {
+        do {
+            try FileManager.default.removeItem(at: fileURL)
+            if verbose {
+                print("Temporary comment file was removed")
+            }
+        } catch {
+            print("Failed to remove temporary file: \(error)")
+        }
     }
 }

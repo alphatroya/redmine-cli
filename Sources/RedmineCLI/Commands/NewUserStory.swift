@@ -39,19 +39,25 @@ struct NewUserStory: ParsableCommand {
         let title = String(components[0])
         let description = GherkinHighlighter.highlight(String(components.dropFirst().joined(separator: "\n\n")))
 
-        let issueService = Redmine.kIssueService
-        let issue = try issueService.new(
-            .init(
-                projectId: project,
-                trackerId: tracker,
-                subject: title,
-                description: description,
-                assignedToId: assign,
-                estimatedHours: estimated,
-                parentIssueId: epic
-            )
-        ).get()
-        print(issue.id)
+        do {
+            let issueService = Redmine.kIssueService
+            let issue = try issueService.new(
+                .init(
+                    projectId: project,
+                    trackerId: tracker,
+                    subject: title,
+                    description: description,
+                    assignedToId: assign,
+                    estimatedHours: estimated,
+                    parentIssueId: epic
+                )
+            ).get()
+            print(issue.id)
+            removeTemporaryFile(fileURL: userInput.fileURL, verbose: verbose)
+        } catch {
+            print("Error occurred, keep comment file at url: \(userInput.fileURL)")
+            throw error
+        }
     }
 }
 
