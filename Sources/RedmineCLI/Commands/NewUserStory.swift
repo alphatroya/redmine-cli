@@ -5,10 +5,13 @@
 
 import ArgumentParser
 import Foundation
+import LineNoise
 import Redmine
 import TextHighlighter
 
 struct NewUserStory: ParsableCommand {
+    // MARK: Internal
+
     static let configuration: CommandConfiguration = .init(abstract: "Create a new user story task")
 
     @Option(help: "Tracker type ID")
@@ -37,7 +40,11 @@ struct NewUserStory: ParsableCommand {
             throw ExitCode(1)
         }
         let title = String(components[0])
-        let description = GherkinHighlighter.highlight(String(components.dropFirst().joined(separator: "\n\n")))
+        var description = GherkinHighlighter.highlight(String(components.dropFirst().joined(separator: "\n\n")))
+        if let reqURL = requestRequirementsDocURL() {
+            description.append("\n")
+            description.append(reqURL)
+        }
 
         do {
             let issueService = Redmine.kIssueService
@@ -57,6 +64,29 @@ struct NewUserStory: ParsableCommand {
         } catch {
             print("Error occurred, keep comment file at url: \(userInput.fileURL)")
             throw error
+        }
+    }
+
+    // MARK: Private
+
+    private func requestRequirementsDocURL() -> String? {
+        let lineNoise = LineNoise()
+        do {
+            print("Введите ссылку на ТЗ или пустую строку если не хотите прикладывать ссылку:")
+            repeat {
+                let line = try lineNoise.getLine(prompt: "> ").trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !line.isEmpty else {
+                    print("Введена пустая строка, ссылка на ТЗ не будет приложена")
+                    return nil
+                }
+                guard URL(string: line) != nil else {
+                    print("Введенная строка не является ссылкой, введите данные еще раз")
+                    continue
+                }
+                return "[ТЗ](\(line))"
+            } while true
+        } catch {
+            return nil
         }
     }
 }
