@@ -6,3 +6,4 @@
 public let kIssueStatusService: IssueStatusServiceProtocol = IssueStatusService(requestProvider: RequestProvider())
 public let kIssueService: IssueServiceProtocol = IssueService(requestProvider: RequestProvider())
 public let kProjectsService: ProjectManagerProtocol = ProjectManager(requestProvider: RequestProvider())
+public let kTrackerService: TrackersServiceProtocol = TrackersService(requestProvider: RequestProvider())

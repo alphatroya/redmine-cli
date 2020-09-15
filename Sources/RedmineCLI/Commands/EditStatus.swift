@@ -8,13 +8,13 @@ import Foundation
 import Redmine
 
 struct EditStatus: ParsableCommand {
-    static var configuration = CommandConfiguration(
-        abstract: "Edit issue status and (optionally) assignee"
-    )
+    // MARK: Internal
 
     enum IssueStatusOption: ExpressibleByArgument {
         case single(IssueStatus.Identifier)
         case row([IssueStatus.Identifier])
+
+        // MARK: Lifecycle
 
         init?(argument: String) {
             let arguments = argument.split(separator: ",").compactMap { IssueStatus.Identifier($0) }
@@ -28,6 +28,10 @@ struct EditStatus: ParsableCommand {
             }
         }
     }
+
+    static var configuration = CommandConfiguration(
+        abstract: "Edit issue status and (optionally) assignee"
+    )
 
     @Option(name: .shortAndLong, help: "Comma separated list of statuses for sequentially edit statuses")
     var status: IssueStatusOption
@@ -48,6 +52,8 @@ struct EditStatus: ParsableCommand {
             }
         }
     }
+
+    // MARK: Private
 
     private func update(_ statusID: IssueStatus.Identifier) throws {
         try kIssueService.update(issueID, status: statusID, assignTo: assignee).get()

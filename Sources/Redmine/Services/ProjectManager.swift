@@ -11,11 +11,15 @@ public protocol ProjectManagerProtocol {
 }
 
 final class ProjectManager: ProjectManagerProtocol {
-    let requestProvider: RequestProviderProtocol
+    // MARK: Lifecycle
 
     init(requestProvider: RequestProviderProtocol) {
         self.requestProvider = requestProvider
     }
+
+    // MARK: Internal
+
+    let requestProvider: RequestProviderProtocol
 
     var all: Result<[Project], Error> {
         requestProvider.sync(ProjectsEndpoint())

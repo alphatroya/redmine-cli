@@ -10,9 +10,11 @@ struct RedmineCli: ParsableCommand {
         abstract: "A CLI tool to working with Redmine task manager",
         subcommands: [
             Comment.self,
-            Statuses.self,
-            Projects.self,
             EditStatus.self,
+            NewUserStory.self,
+            Projects.self,
+            Statuses.self,
+            Trackers.self,
         ]
     )
 
@@ -23,6 +25,6 @@ struct RedmineCli: ParsableCommand {
         guard version else {
             throw CleanExit.helpRequest(RedmineCli.self)
         }
-        print("0.0.11")
+        print("0.0.12")
     }
 }

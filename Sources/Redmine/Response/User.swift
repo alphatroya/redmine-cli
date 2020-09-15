@@ -8,6 +8,8 @@ import Foundation
 public enum NewAssignee: Encodable {
     case id(UserID)
 
+    // MARK: Public
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {

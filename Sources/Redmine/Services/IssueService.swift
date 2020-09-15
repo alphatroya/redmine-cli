@@ -9,14 +9,17 @@ public protocol IssueServiceProtocol {
     func issue(_: IssueID) -> Result<Issue, Error>
     func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error>
     func update(_ id: IssueID, status: IssueStatus.Identifier, assignTo assignee: NewAssignee?) -> Result<Void, Error>
+    func new(_ data: NewIssuePayload) -> Result<Issue, Error>
 }
 
 public final class IssueService: IssueServiceProtocol {
-    let requestProvider: RequestProviderProtocol
+    // MARK: Lifecycle
 
     init(requestProvider: RequestProviderProtocol) {
         self.requestProvider = requestProvider
     }
+
+    // MARK: Public
 
     public func issue(_ id: IssueID) -> Result<Issue, Error> {
         requestProvider.sync(IssueEndpoint.get(id: id))
@@ -28,8 +31,17 @@ public final class IssueService: IssueServiceProtocol {
             .map { (_: Data) in () }
     }
 
+    public func new(_ data: NewIssuePayload) -> Result<Issue, Error> {
+        requestProvider.sync(IssueEndpoint.new(data))
+            .map { (response: ResponseContainer<Issue>) in response.result }
+    }
+
     public func update(_ id: IssueID, status: IssueStatus.Identifier, assignTo assignee: NewAssignee?) -> Result<Void, Error> {
         requestProvider.sync(IssueEndpoint.update(id: id, data: .init(assignedToId: assignee, statusId: status)))
             .map { (_: Data) in () }
     }
+
+    // MARK: Internal
+
+    let requestProvider: RequestProviderProtocol
 }

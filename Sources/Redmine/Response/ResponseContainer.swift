@@ -10,25 +10,7 @@ protocol ContainerKeySpecifier {
 }
 
 struct ResponseContainer<T: Decodable>: Decodable where T: ContainerKeySpecifier {
-    private struct AnyCodingKeys: CodingKey {
-        var stringValue: String
-
-        init?(stringValue: String) {
-            self.stringValue = stringValue
-        }
-
-        var intValue: Int? {
-            nil
-        }
-
-        init?(intValue _: Int) {
-            nil
-        }
-    }
-
-    struct DecodingFailure: Error {}
-
-    let result: T
+    // MARK: Lifecycle
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: AnyCodingKeys.self)
@@ -36,6 +18,34 @@ struct ResponseContainer<T: Decodable>: Decodable where T: ContainerKeySpecifier
             throw DecodingFailure()
         }
         result = try container.decode(T.self, forKey: key)
+    }
+
+    // MARK: Internal
+
+    struct DecodingFailure: Error {}
+
+    let result: T
+
+    // MARK: Private
+
+    private struct AnyCodingKeys: CodingKey {
+        // MARK: Lifecycle
+
+        init?(stringValue: String) {
+            self.stringValue = stringValue
+        }
+
+        init?(intValue _: Int) {
+            nil
+        }
+
+        // MARK: Internal
+
+        var stringValue: String
+
+        var intValue: Int? {
+            nil
+        }
     }
 }
 
