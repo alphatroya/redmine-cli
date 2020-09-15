@@ -14,6 +14,9 @@ struct NewUserStory: ParsableCommand {
 
     static let configuration: CommandConfiguration = .init(abstract: "Create a new user story task")
 
+    @Option(help: "Title prefix for a new user story")
+    var titlePrefix = "[US]"
+
     @Option(help: "Tracker type ID")
     var tracker: Redmine.Tracker.Identifier
 
@@ -39,7 +42,7 @@ struct NewUserStory: ParsableCommand {
             print("You should enter title and description separated by one empty line")
             throw ExitCode(1)
         }
-        let title = String(components[0])
+        let title = [titlePrefix, String(components[0])].joined(separator: " ")
         var description = GherkinHighlighter.highlight(String(components.dropFirst().joined(separator: "\n\n")))
         if let reqURL = requestRequirementsDocURL() {
             description.append("\n")
@@ -79,8 +82,8 @@ struct NewUserStory: ParsableCommand {
                     print("Введена пустая строка, ссылка на ТЗ не будет приложена")
                     return nil
                 }
-                guard URL(string: line) != nil else {
-                    print("Введенная строка не является ссылкой, введите данные еще раз")
+                guard URL(string: line) != nil, line.hasPrefix("http") else {
+                    print("\nВведенная строка не является ссылкой, введите данные еще раз")
                     continue
                 }
                 return "[ТЗ](\(line))"
