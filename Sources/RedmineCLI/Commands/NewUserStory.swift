@@ -5,7 +5,6 @@
 
 import ArgumentParser
 import Foundation
-import LineNoise
 import Redmine
 import TextHighlighter
 
@@ -73,24 +72,18 @@ struct NewUserStory: ParsableCommand {
     // MARK: Private
 
     private func requestRequirementsDocURL() -> String? {
-        let lineNoise = LineNoise()
-        do {
-            print("Введите ссылку на ТЗ или пустую строку если не хотите прикладывать ссылку:")
-            repeat {
-                let line = try lineNoise.getLine(prompt: "> ").trimmingCharacters(in: .whitespacesAndNewlines)
-                guard !line.isEmpty else {
-                    print("Введена пустая строка, ссылка на ТЗ не будет приложена")
-                    return nil
-                }
-                guard URL(string: line) != nil, line.hasPrefix("http") else {
-                    print("\nВведенная строка не является ссылкой, введите данные еще раз")
-                    continue
-                }
-                return "[ТЗ](\(line))"
-            } while true
-        } catch {
-            return nil
-        }
+        print("Введите ссылку на ТЗ или пустую строку если не хотите прикладывать ссылку:")
+        repeat {
+            guard let line = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), !line.isEmpty else {
+                print("Введена пустая строка, ссылка на ТЗ не будет приложена")
+                return nil
+            }
+            guard URL(string: line) != nil, line.hasPrefix("http") else {
+                print("\nВведенная строка не является ссылкой, введите данные еще раз:")
+                continue
+            }
+            return "[ТЗ](\(line))"
+        } while true
     }
 }
 
