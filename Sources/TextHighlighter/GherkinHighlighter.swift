@@ -32,6 +32,7 @@ public enum GherkinHighlighter {
             "А",
             "Иначе",
             "Правило",
+            "Или",
         ]
         let lines = input.components(separatedBy: "\n")
         let resultLines: [String] = lines.map { line in
