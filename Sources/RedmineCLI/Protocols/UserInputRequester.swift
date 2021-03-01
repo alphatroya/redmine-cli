@@ -27,9 +27,7 @@ extension UserInputRequester {
         let directory = NSTemporaryDirectory()
         let fileName = UUID().uuidString + fileType
         let fileURL = URL(fileURLWithPath: [directory, fileName].joined())
-        if verbose {
-            print("Creating temporary comment file at path: \(fileURL)")
-        }
+        print("Using temporary file at path: \(fileURL)")
 
         shellCMD("\(editor) \(fileURL.absoluteString)")
 

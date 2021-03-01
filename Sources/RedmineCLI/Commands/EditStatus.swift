@@ -39,23 +39,26 @@ struct EditStatus: ParsableCommand {
     @Option(name: .shortAndLong, help: "New assignee")
     var assignee: NewAssignee?
 
-    @Argument(help: "Issue ID")
-    var issueID: IssueID
+    @Argument(help: "One or several issue id identifiers")
+    var issues: [IssueID]
 
     func run() throws {
-        switch status {
-        case let .single(id):
-            try update(id)
-        case let .row(ids):
-            for id in ids {
-                try update(id)
+        for issue in issues {
+            switch status {
+            case let .single(id):
+                try update(id, issue)
+            case let .row(ids):
+                for id in ids {
+                    try update(id, issue)
+                }
             }
+            print("updated issue #\(issue)")
         }
     }
 
     // MARK: Private
 
-    private func update(_ statusID: IssueStatus.Identifier) throws {
-        try kIssueService.update(issueID, status: statusID, assignTo: assignee).get()
+    private func update(_ statusID: IssueStatus.Identifier, _ issue: IssueID) throws {
+        try kIssueService.update(issue, status: statusID, assignTo: assignee).get()
     }
 }
