@@ -1,6 +1,6 @@
 //
 // Redmine CLI
-// Copyright © 2020 Alexey Korolev <alphatroya@gmail.com>
+// Copyright © 2021 Alexey Korolev <alphatroya@gmail.com>
 //
 
 import ArgumentParser

@@ -6,7 +6,7 @@
 import Foundation
 
 public protocol ProjectManagerProtocol {
-    var all: Result<[Project], Error> { get }
+    func get(limit: Int, offset: Int) -> Result<[Project], Error>
     func members(for id: ProjectID) -> Result<[ProjectMember], Error>
 }
 
@@ -21,8 +21,8 @@ final class ProjectManager: ProjectManagerProtocol {
 
     let requestProvider: RequestProviderProtocol
 
-    var all: Result<[Project], Error> {
-        requestProvider.sync(ProjectsEndpoint())
+    func get(limit: Int, offset: Int) -> Result<[Project], Error> {
+        requestProvider.sync(ProjectsEndpoint(offset: offset, limit: limit))
             .map { (response: ResponseContainer<[Project]>) in response.result }
     }
 
