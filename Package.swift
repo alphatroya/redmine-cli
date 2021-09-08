@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.4
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,7 +14,7 @@ let package = Package(
         .package(url: "https://github.com/scottrhoyt/SwiftyTextTable", from: "0.9.0"),
     ],
     targets: [
-        .target(
+        .executableTarget(
             name: "RedmineCLI",
             dependencies: [
                 "CBridge",
