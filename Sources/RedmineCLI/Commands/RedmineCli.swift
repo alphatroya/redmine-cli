@@ -13,6 +13,7 @@ struct RedmineCli: ParsableCommand {
             Comment.self,
             EditStatus.self,
             NewUserStory.self,
+            NewFeature.self,
             Projects.self,
             Statuses.self,
             Trackers.self,

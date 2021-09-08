@@ -1,6 +1,6 @@
 //
 // Redmine CLI
-// Copyright © 2020 Alexey Korolev <alphatroya@gmail.com>
+// Copyright © 2021 Alexey Korolev <alphatroya@gmail.com>
 //
 
 import ArgumentParser
@@ -43,7 +43,7 @@ struct Comment: ParsableCommand {
 
     // MARK: Private
 
-    private func fetchIssue(service: IssueServiceProtocol) throws -> Issue {
+    private func fetchIssue(service: IssueService) throws -> Issue {
         try service.issue(issue).get()
     }
 }

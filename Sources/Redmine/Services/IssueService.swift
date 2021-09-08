@@ -1,18 +1,11 @@
 //
 // Redmine CLI
-// Copyright © 2020 Alexey Korolev <alphatroya@gmail.com>
+// Copyright © 2021 Alexey Korolev <alphatroya@gmail.com>
 //
 
 import Foundation
 
-public protocol IssueServiceProtocol {
-    func issue(_: IssueID) -> Result<Issue, Error>
-    func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error>
-    func update(_ id: IssueID, status: IssueStatus.Identifier, assignTo assignee: NewAssignee?) -> Result<Void, Error>
-    func new(_ data: NewIssuePayload) -> Result<Issue, Error>
-}
-
-public final class IssueService: IssueServiceProtocol {
+public final class IssueService {
     // MARK: Lifecycle
 
     init(requestProvider: RequestProviderProtocol) {

@@ -1,6 +1,6 @@
 //
 // Redmine CLI
-// Copyright © 2020 Alexey Korolev <alphatroya@gmail.com>
+// Copyright © 2021 Alexey Korolev <alphatroya@gmail.com>
 //
 
 import Foundation
@@ -23,7 +23,7 @@ public struct NewIssuePayload: Encodable {
         description: String,
         assignedToId: UserID,
         estimatedHours: Int,
-        parentIssueId: IssueID
+        parentIssueId: IssueID?
     ) {
         self.projectId = projectId
         self.trackerId = trackerId
@@ -43,6 +43,6 @@ public struct NewIssuePayload: Encodable {
     public let description: String
     public let assignedToId: UserID
     public let estimatedHours: Int
-    public let parentIssueId: IssueID
+    public let parentIssueId: IssueID?
     public let customFields: [NewIssueCustomField]
 }
