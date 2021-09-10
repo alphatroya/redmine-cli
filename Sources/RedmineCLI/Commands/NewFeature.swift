@@ -9,6 +9,8 @@ import Redmine
 import TextHighlighter
 
 struct NewFeature: ParsableCommand {
+    // MARK: Internal
+
     static let configuration: CommandConfiguration = .init(abstract: "Create a new feature")
 
     @Option(help: "Tracker type ID")
@@ -27,14 +29,15 @@ struct NewFeature: ParsableCommand {
     var verbose: Bool = false
 
     func run() throws {
-        let userInput = try requestInput(fileType: ".md", verbose: verbose)
-        let components = userInput.notes.components(separatedBy: "\n\n")
-        guard components.count > 1 else {
-            print("You should enter title and description separated by one empty line")
-            throw ExitCode(1)
+        guard let title = requestTitle() else {
+            print("Введена пустая строка, команда остановлена")
+            return
         }
-        let title = String(components[0])
-        let description = String(components.dropFirst().joined(separator: "\n\n"))
+        let description = try requestInput(fileType: ".md", verbose: verbose)
+        guard !description.notes.isEmpty else {
+            print("Вы не написали описания для задачи, команда остановлена")
+            return
+        }
         do {
             let issueService = Redmine.kIssueService
             let issue = try issueService.new(
@@ -42,18 +45,28 @@ struct NewFeature: ParsableCommand {
                     projectId: project,
                     trackerId: tracker,
                     subject: title,
-                    description: description,
+                    description: description.notes,
                     assignedToId: assign,
                     estimatedHours: estimated,
                     parentIssueId: nil
                 )
             ).get()
             print(issue.id)
-            removeTemporaryFile(fileURL: userInput.fileURL, verbose: verbose)
+            removeTemporaryFile(fileURL: description.fileURL, verbose: verbose)
         } catch {
-            print("Error occurred, keep comment file at url: \(userInput.fileURL)")
+            print("Error occurred, keep comment file at url: \(description.fileURL)")
             throw error
         }
+    }
+
+    // MARK: Private
+
+    private func requestTitle() -> String? {
+        print("Введите заголовок будущей задачи")
+        guard let line = readLine()?.trimmingCharacters(in: .whitespacesAndNewlines), !line.isEmpty else {
+            return nil
+        }
+        return line
     }
 }
 
