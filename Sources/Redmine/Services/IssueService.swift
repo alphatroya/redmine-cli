@@ -19,6 +19,11 @@ public final class IssueService {
             .map { (response: ResponseContainer<Issue>) in response.result }
     }
 
+    public func all(_ id: ProjectID, status: IssueStatus.Identifier?) -> Result<[IssueListItem], Error> {
+        requestProvider.sync(IssueEndpoint.all(id: id, status: status))
+            .map { (response: ResponseContainer<[IssueListItem]>) in response.result }
+    }
+
     public func update(_ id: IssueID, comment: String, assignTo userID: UserID?) -> Result<Void, Error> {
         requestProvider.sync(IssueEndpoint.update(id: id, data: .init(notes: comment, assignedToId: userID.map { NewAssignee.id($0) })))
             .map { (_: Data) in () }

@@ -18,6 +18,7 @@ struct RedmineCli: ParsableCommand {
             Projects.self,
             Statuses.self,
             Trackers.self,
+            Issues.self,
         ]
     )
 }
